@@ -1,0 +1,127 @@
+/* *********QUeries****************************/
+/* ************1*****************/
+select * from emp_details_view;
+select  distinct employee_id,  manager_id, department_id, location_id, country_id, salary, commission_pct, department_name,job_title, city, state_province, country_name, region_name   from emp_details_view;
+select distinct employee_id from emp_details_view;
+select distinct manager_id from emp_details_view;
+select distinct department_id from emp_details_view;
+select distinct location_id from emp_details_view;
+select distinct country_id from emp_details_view;
+select distinct salary from emp_details_view;
+select distinct commission_pct from emp_details_view;
+select distinct department_name from emp_details_view;
+select distinct job_title from emp_details_view;
+select distinct city from emp_details_view;
+select distinct state_province from emp_details_view;
+select distinct country_name from emp_details_view;
+select distinct region_name from emp_details_view;
+/**************2***********/
+
+select  avg(salary) from emp_details_view;
+select  max(salary) from emp_details_view;
+select  min(salary) from emp_details_view;
+select  count(salary) from emp_details_view;
+select  sum(salary) from emp_details_view;
+
+/***************3****************/
+select first_name, last_name, department_id, salary from employees where salary>=20000;
+
+/***************4****************/
+select first_name, last_name, email, salary, manager_ID from employees where manager_ID in (120,103,145);
+
+/***************5****************/
+select first_name, last_name, department_id, salary from employees where salary>8000 and manager_ID in (120,103,145);
+
+/***************6****************/
+select location_id, city from locations where state_province is null;
+
+/***************7****************/
+select job_id, job_title, min_salary,max_salary 
+from jobs 
+where max_salary>10000;
+
+/***************8****************/
+select department_id, department_name, manager_id 
+from departments
+where manager_id> 200 and location_id=2400;
+
+/***************9****************/
+select job_title from jobs where min_salary>8000 and max_salary<20000;
+
+/***************10****************/
+select manager_id from departments where location_id=1700;
+
+/***************11****************/
+select department_name from departments where department_name like "p%" and manager_id is not null;
+
+/***************12****************/
+SELECT
+    CONCAT('This is to certify that ',
+           first_name, ' ', last_name,
+           ' with employee id ', employee_id,
+           ' is working as ', job_id,
+           ' in dept. ', department_id) AS bonafide_certificate
+FROM
+    employees
+WHERE
+    employee_id = 123;
+
+
+
+/***************13****************/
+select employee_id, salary, case(salary)
+when salary<5000 then 'Tier1'
+when salary between 5000 and 10000 then 'Tier2'
+else 'Tier3'
+end as tiers
+from employees;
+
+/***************14****************/
+SELECT department_id, job_id, SUM(salary) AS total_salary
+FROM employees
+WHERE salary > 25000
+GROUP BY department_id, job_id;
+
+/***************15****************/
+SELECT first_name, last_name
+FROM employees
+WHERE first_name REGEXP '[aeiou]$' AND last_name REGEXP '[aeiou]$';
+
+/***************16****************/
+SELECT job_title,
+       MAX(max_salary) - MIN(min_salary) AS salary_range
+FROM jobs
+WHERE job_title REGEXP 'Manager$' OR job_title REGEXP 'Clerk$'
+GROUP BY job_title;
+
+/***************17****************/
+SELECT e1.employee_id, e1.first_name, e1.last_name
+FROM emp_details_view e1
+JOIN emp_details_view e2 ON e1.manager_id = e2.manager_id
+WHERE e1.department_id = 110
+  AND e2.department_id = 110;
+  
+  
+select  * from departments;
+
+/***************18****************/
+select first_name, last_name, department_id, department_name from emp_details_view;
+
+/***************19****************/
+select department_name, avg(salary) , sum(employee_id) 
+from emp_details_view
+where commission_pct is not null
+group by department_name;
+
+/***************20****************/
+select first_name from emp_details_view
+where commission_pct is null;
+
+/***************21****************/
+SELECT 
+    first_name,
+    CASE
+        WHEN commission_pct IS NULL THEN 'It’s null'
+        WHEN commission_pct IS NOT NULL THEN 'It’s not null'
+    END AS commission_status
+FROM emp_details_view;
